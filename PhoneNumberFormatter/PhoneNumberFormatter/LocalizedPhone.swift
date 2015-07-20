@@ -12,8 +12,8 @@ import Foundation
 /**
     Example:::
     
-    func formValueChanged(sender: UIView) {
-        phoneField.text = LocalizedPhone.format(phoneField.text)
+    @IBAction func formValueChanged(sender: UITextField) {
+        sender.text = LocalizedPhone.format(sender.text, hash: sender.hash)
     }
 */
 public struct LocalizedPhone {
@@ -22,9 +22,8 @@ public struct LocalizedPhone {
         Set available locales here.
     */
     private enum AvailableLocales: String {
-        case UnitedStates = "en_US",
-             Canada = "en_CA",
-             CanadaFrench = "fr_CA"
+        case UnitedStates = "US",
+             Canada = "CA"
     }
     
     /**
@@ -39,7 +38,6 @@ public struct LocalizedPhone {
     private static let formatByLocale: [AvailableLocales: Format] = [
         .UnitedStates: Format(length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
         .Canada: Format(length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
-        .CanadaFrench: Format(length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
     ]
     
     /**
@@ -49,9 +47,8 @@ public struct LocalizedPhone {
         var length: Int, match: String, format: String
     }
     private static var locale: AvailableLocales = {
-        if let language = NSLocale.preferredLanguages().first as? String,
-           let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String,
-           let locale = AvailableLocales(rawValue: "\(language)_\(country)") {
+        if let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String,
+           let locale = AvailableLocales(rawValue: country) {
             return locale
         }
         return LocalizedPhone.defaultLocale

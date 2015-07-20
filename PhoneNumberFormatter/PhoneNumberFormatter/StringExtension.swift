@@ -88,7 +88,7 @@ extension String {
     /**
         Simple pattern matcher. Requires full match (ie, includes ^$ implicitly).
         
-        :param: pattern             Regex pattern (ie, includes ^$ implicitly)
+        :param: pattern             Regex pattern (includes ^$ implicitly)
         :returns: true if full match found
     */
     func matches(pattern: String) -> Bool {
