@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PhoneNumberFormatter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone 1: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rt6-LW-WpI" userLabel="Label1">
+                                <rect key="frame" x="16" y="40" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2065551234" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SRM-ex-Bvh" userLabel="Phone1">
+                                <rect key="frame" x="98" y="37" width="486" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="formatField:" destination="BYZ-38-t0r" eventType="editingChanged" id="Jlo-3u-LU2"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone 2: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gVh-uS-NKa" userLabel="Label2">
+                                <rect key="frame" x="16" y="71" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UIR-f1-rVb" userLabel="Phone2">
+                                <rect key="frame" x="98" y="68" width="486" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="formatField:" destination="BYZ-38-t0r" eventType="editingChanged" id="Tvs-vV-gwA"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGr-7x-ia1">
+                                <rect key="frame" x="16" y="112" width="97" height="30"/>
+                                <state key="normal" title="Check Is Valid">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="checkIsValid:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPh-U3-1cm"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Validation Response" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDP-XG-aJT" userLabel="Validation Response">
+                                <rect key="frame" x="16" y="162" width="156" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gDP-XG-aJT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="4M7-eH-VJ4"/>
+                            <constraint firstItem="gDP-XG-aJT" firstAttribute="top" secondItem="tGr-7x-ia1" secondAttribute="bottom" constant="20" id="5dL-zC-wOQ"/>
+                            <constraint firstItem="Rt6-LW-WpI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Au-E4-TgK"/>
+                            <constraint firstItem="UIR-f1-rVb" firstAttribute="leading" secondItem="gVh-uS-NKa" secondAttribute="trailing" constant="8" id="6Xj-iU-5gP"/>
+                            <constraint firstItem="UIR-f1-rVb" firstAttribute="leading" secondItem="gVh-uS-NKa" secondAttribute="trailing" constant="8" id="ALI-Cs-EcT"/>
+                            <constraint firstItem="SRM-ex-Bvh" firstAttribute="leading" secondItem="Rt6-LW-WpI" secondAttribute="trailing" constant="8" id="BUi-qJ-U2a"/>
+                            <constraint firstItem="UIR-f1-rVb" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="FSx-fD-baf"/>
+                            <constraint firstItem="gVh-uS-NKa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="FcM-ur-WVr"/>
+                            <constraint firstItem="SRM-ex-Bvh" firstAttribute="centerY" secondItem="Rt6-LW-WpI" secondAttribute="centerY" constant="1.5" id="Ggt-KC-gK5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SRM-ex-Bvh" secondAttribute="trailing" id="Q1h-aG-TYc"/>
+                            <constraint firstItem="Rt6-LW-WpI" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="acc-hx-QmH"/>
+                            <constraint firstItem="tGr-7x-ia1" firstAttribute="top" secondItem="gVh-uS-NKa" secondAttribute="bottom" constant="20" id="kX4-2g-nGQ"/>
+                            <constraint firstItem="SRM-ex-Bvh" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="lkF-cL-1lo"/>
+                            <constraint firstItem="UIR-f1-rVb" firstAttribute="centerY" secondItem="gVh-uS-NKa" secondAttribute="centerY" constant="1.5" id="q6R-TY-fjk"/>
+                            <constraint firstItem="tGr-7x-ia1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="s6v-0T-ZDr"/>
+                            <constraint firstItem="gVh-uS-NKa" firstAttribute="top" secondItem="Rt6-LW-WpI" secondAttribute="bottom" constant="10" id="z7e-eF-ivg"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="lkF-cL-1lo"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="phone1" destination="SRM-ex-Bvh" id="IIN-Nm-HJb"/>
+                        <outlet property="phone2" destination="UIR-f1-rVb" id="jrB-Dt-git"/>
+                        <outlet property="validationResponse" destination="gDP-XG-aJT" id="oZR-qN-6xB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
