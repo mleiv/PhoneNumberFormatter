@@ -1,6 +1,6 @@
 # PhoneNumberFormatter
 
-** Provides visually formatting of phone number fields, while typing. Format is defined by Regex patterns and can be localized. **
+**Provides visual formatting of phone number fields, while typing. Format is defined by Regex patterns and can be localized.**
 
 
 ## Including in Your App
