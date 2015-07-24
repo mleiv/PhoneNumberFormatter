@@ -5,15 +5,16 @@
 
 ## Including in Your App
 
-There are two files to add to your app: LocalizedPhone.swift and StringExtension.swift. 
+There are two files to add to your app: PhoneNumberFormatter.swift and StringExtension.swift. 
 
 (*If you already have Dollar/Cent or lots of string customization, you may want to alter StringExtension/LocalizedPhone to utilize your own code. Otherwise, yay new String features!*)
 
 Then, wire up your phone number field's **Editing Changed** action and call the formatter in there:
 
 ```swift
+var phoneFormatter = PhoneNumberFormatter()
 @IBAction func formatField(sender: UITextField) {
-    sender.text = LocalizedPhone.format(sender.text, hash: sender.hash)
+    sender.text = phoneFormatter.format(sender.text, hash: sender.hash)
 }
 ```
 
@@ -21,6 +22,6 @@ The formatter will change **2065551234** to **(206) 555-1234** (sorry, the forma
 
 ## More Things
 
-- There is an additional LocalizedPhone.isValid() function available to test if a complete phone number was entered (to call before submitting the form).
+- There is an additional phoneFormatter.isValid() function available to test if a complete phone number was entered (to call before submitting the form).
 - You can add new locales and formats easily with Regex.
 
