@@ -12,11 +12,12 @@ import Foundation
 /**
     Example:::
     
+    var phoneFormatter = PhoneNumberFormatter()
     @IBAction func formValueChanged(sender: UITextField) {
-        sender.text = LocalizedPhone.format(sender.text, hash: sender.hash)
+        sender.text = phoneFormatter.format(sender.text, hash: sender.hash)
     }
 */
-public struct LocalizedPhone {
+public struct PhoneNumberFormatter {
 
     /**
         Set available locales here.
@@ -31,29 +32,26 @@ public struct LocalizedPhone {
     */
     private static var defaultLocale = AvailableLocales.UnitedStates
     
-    /**
-        Set formats for available locales here.
-        (expect a string of correct length, but match with dot (.), not digit (\d))
-    */
-    private static let formatByLocale: [AvailableLocales: Format] = [
-        .UnitedStates: Format(length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
-        .Canada: Format(length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
-    ]
-    
-    /**
-        Supporting definitions here.
-    */
-    private struct Format {
-        var length: Int, match: String, format: String
-    }
     private static var locale: AvailableLocales = {
         if let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String,
            let locale = AvailableLocales(rawValue: country) {
             return locale
         }
-        return LocalizedPhone.defaultLocale
+        return defaultLocale
     }()
-    private static var lastPhoneNumbers: [Int: String] = [:]
+
+    
+    /**
+        Set formats for available locales here.
+        (expect a string of correct length, but match with dot (.), not digit (\d))
+    */
+    private let formatByLocale: [AvailableLocales: Format] = [
+        .UnitedStates: (length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
+        .Canada: (length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
+    ]
+    private typealias Format = (length: Int, match: String, format: String)
+    
+    private var lastPhoneNumbers: [Int: String] = [:]
     
     //Mark: Public functions:
     
@@ -64,14 +62,14 @@ public struct LocalizedPhone {
         :param: hash             If you are dealing with multiple phone numbers, you will need to include a unique id for each (field.hash is good)
         :returns:                Formatted phone number string
     */
-    public static func format(phoneNumber: String, hash: Int = 0) -> String {
+    mutating public func format(phoneNumber: String, hash: Int = 0) -> String {
         //strip to numbers
         var numericText = phoneNumber.onlyCharacters("0123456789")
         if numericText.length == 0 {
-            self.lastPhoneNumbers[hash] = ""
+            lastPhoneNumbers[hash] = ""
             return ""
         }
-        if let formatStyle = self.formatByLocale[self.locale] {
+        if let formatStyle = formatByLocale[PhoneNumberFormatter.locale] {
             //if characters removed by user, change to remove numbers instead of formatting
             let lastPhoneNumber = self.lastPhoneNumbers[hash] ?? ""
             let lastNumericText = lastPhoneNumber.onlyCharacters("0123456789")
@@ -92,10 +90,10 @@ public struct LocalizedPhone {
             }
             let fullyFormattedNumber = numericText.stringByReplacingOccurrencesOfString(formatStyle.match, withString: formatStyle.format, options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
             if let editingNumber = split(fullyFormattedNumber, maxSplit: 1, allowEmptySlices: true, isSeparator: {Character(placeholder) == $0}).first {
-                self.lastPhoneNumbers[hash] = editingNumber
+                lastPhoneNumbers[hash] = editingNumber
                 return editingNumber
             }
-            self.lastPhoneNumbers[hash] = fullyFormattedNumber
+            lastPhoneNumbers[hash] = fullyFormattedNumber
             return fullyFormattedNumber
         }
         return numericText
@@ -107,11 +105,18 @@ public struct LocalizedPhone {
         :param: phoneNumber      A numeric phone number. Expects no formatting!
         :returns:                True if phone number matches locale pattern
     */
-    public static func isValid(phoneNumber: String) -> Bool {
+    public func isValid(phoneNumber: String) -> Bool {
         var numericText = phoneNumber.onlyCharacters("0123456789")
-        if let formatStyle = self.formatByLocale[self.locale] {
+        if let formatStyle = formatByLocale[PhoneNumberFormatter.locale] {
             return numericText.length == formatStyle.length
         }
         return false
+    }
+    
+    /**
+        Remove prior saved values for fresh field comparison.
+    */
+    mutating public func reset() {
+        lastPhoneNumbers = [:]
     }
 }
