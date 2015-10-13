@@ -27,20 +27,22 @@ class ViewController: UIViewController {
         Wired up to be called every time the field is edited.
     */
     @IBAction func formatField(sender: UITextField) {
-        if sender == phone1 {
-            sender.text = phoneFormatter.format(sender.text)
-        } else {
-            //multiple phone numbers being validated at once require an additional unique hash parameter so we can keep them straight
-            sender.text = phoneFormatter.format(sender.text, hash: sender.hash)
+        if let text = sender.text {
+            if sender == phone1 {
+                sender.text = phoneFormatter.format(text)
+            } else {
+                //multiple phone numbers being validated at once require an additional unique hash parameter so we can keep them straight
+                sender.text = phoneFormatter.format(text, hash: sender.hash)
+            }
         }
     }
     
     @IBAction func checkIsValid(sender: AnyObject) {
         var invalidMessage = String()
-        if !phoneFormatter.isValid(phone1.text) {
+        if let text = phone1.text where !phoneFormatter.isValid(text) {
             invalidMessage += "Phone 1 is invalid.\n"
         }
-        if !phoneFormatter.isValid(phone2.text) {
+        if let text = phone2.text where !phoneFormatter.isValid(text) {
             invalidMessage += "Phone 2 is invalid.\n"
         }
         validationResponse.text = invalidMessage
