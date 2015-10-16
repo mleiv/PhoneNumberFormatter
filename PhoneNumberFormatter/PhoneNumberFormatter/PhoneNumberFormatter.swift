@@ -58,9 +58,9 @@ public struct PhoneNumberFormatter {
     /**
         Turns a phone number into a pretty formatted phone number for the current locale. Strips text down to numbers before running.
         
-        :param: phoneNumber      Any string with numbers or existing formatting
-        :param: hash             If you are dealing with multiple phone numbers, you will need to include a unique id for each (field.hash is good)
-        :returns:                Formatted phone number string
+        - parameter phoneNumber:      Any string with numbers or existing formatting
+        - parameter hash:             If you are dealing with multiple phone numbers, you will need to include a unique id for each (field.hash is good)
+        - returns:                Formatted phone number string
     */
     mutating public func format(phoneNumber: String, hash: Int = 0) -> String {
         //strip to numbers
@@ -77,7 +77,7 @@ public struct PhoneNumberFormatter {
             let actualSubtractChars = max(0, lastNumericText.length - numericText.length)
             if requestedSubtractChars > 0 && actualSubtractChars < requestedSubtractChars {
                 let subtractChars = requestedSubtractChars - actualSubtractChars
-                println(subtractChars)
+                print(subtractChars)
                 numericText = subtractChars >= numericText.length  ? "" : numericText.stringFrom(0, to: -1 * subtractChars)
             }
             //add formatting
@@ -89,9 +89,12 @@ public struct PhoneNumberFormatter {
                 numericText = numericText.stringFrom(0, to: formatStyle.length)
             }
             let fullyFormattedNumber = numericText.stringByReplacingOccurrencesOfString(formatStyle.match, withString: formatStyle.format, options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
-            if let editingNumber = split(fullyFormattedNumber, maxSplit: 1, allowEmptySlices: true, isSeparator: {Character(placeholder) == $0}).first {
-                lastPhoneNumbers[hash] = editingNumber
-                return editingNumber
+            if let editingNumber = fullyFormattedNumber.characters.split(1, allowEmptySlices: true, isSeparator: {
+                Character(placeholder) == $0
+            }).first {
+                let eNumber = String(editingNumber)
+                lastPhoneNumbers[hash] = eNumber
+                return eNumber
             }
             lastPhoneNumbers[hash] = fullyFormattedNumber
             return fullyFormattedNumber
@@ -102,11 +105,11 @@ public struct PhoneNumberFormatter {
     /**
         Checks phone number is a valid phone number for the current locale.
         
-        :param: phoneNumber      A numeric phone number. Expects no formatting!
-        :returns:                True if phone number matches locale pattern
+        - parameter phoneNumber:      A numeric phone number. Expects no formatting!
+        - returns:                True if phone number matches locale pattern
     */
     public func isValid(phoneNumber: String) -> Bool {
-        var numericText = phoneNumber.onlyCharacters("0123456789")
+        let numericText = phoneNumber.onlyCharacters("0123456789")
         if let formatStyle = formatByLocale[PhoneNumberFormatter.locale] {
             return numericText.length == formatStyle.length
         }
