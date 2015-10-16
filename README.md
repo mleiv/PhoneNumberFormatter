@@ -2,6 +2,9 @@
 
 **Provides visual formatting of phone number fields, while typing. Format is defined by Regex patterns and can be localized.**
 
+## News
+
+2015-10-16 Updated to Swift 2.0, thanks to [duffpod](https://github.com/duffpod)
 
 ## Including in Your App
 

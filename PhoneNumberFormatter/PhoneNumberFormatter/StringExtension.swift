@@ -90,7 +90,7 @@ extension String {
     */
     func onlyCharacters(allowed: String) -> String {
         let search = allowed.characters
-        return allowed.characters.filter({ search.contains($0) }).reduce("", combine: { $0 + String($1) })
+        return characters.filter({ search.contains($0) }).reduce("", combine: { $0 + String($1) })
     }
     /**
         Simple pattern matcher. Requires full match (ie, includes ^$ implicitly).

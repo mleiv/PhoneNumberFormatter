@@ -38,15 +38,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func checkIsValid(sender: AnyObject) {
-        var invalidMessage = String()
-        if let text = phone1.text where !phoneFormatter.isValid(text) {
-            invalidMessage += "Phone 1 is invalid.\n"
+        validationResponse.hidden = true
+        var message = String()
+        if phone1.text?.isEmpty == false {
+            if let text = phone1.text where !phoneFormatter.isValid(text) {
+                message += "Phone 1 is invalid.\n"
+            } else {
+                message += "Phone 1 is valid.\n"
+            }
         }
-        if let text = phone2.text where !phoneFormatter.isValid(text) {
-            invalidMessage += "Phone 2 is invalid.\n"
+        if phone2.text?.isEmpty == false {
+            if let text = phone2.text where !phoneFormatter.isValid(text) {
+                message += "Phone 2 is invalid.\n"
+            } else {
+                message += "Phone 2 is valid.\n"
+            }
         }
-        validationResponse.text = invalidMessage
-        validationResponse.hidden = invalidMessage.isEmpty
+        validationResponse.text = message
+        validationResponse.hidden = false
     }
 
 }
