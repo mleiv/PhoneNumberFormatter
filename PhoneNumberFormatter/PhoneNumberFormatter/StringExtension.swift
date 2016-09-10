@@ -5,6 +5,17 @@
 //  No license, everyone free to use.
 
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 extension String {
     /**
@@ -15,11 +26,11 @@ extension String {
         - parameter length:    Integer target length for entire string
         - returns: The padded string
     */
-    func lpad(padding: String, length: Int) -> (String) {
+    func lpad(_ padding: String, length: Int) -> (String) {
         if self.characters.count > length {
             return self
         }
-        return "".stringByPaddingToLength(length - self.characters.count, withString:padding, startingAtIndex:0) + self
+        return "".padding(toLength: length - self.characters.count, withPad:padding, startingAt:0) + self
     }
     /**
         Pads the right side of a string with the specified string up to the specified length.
@@ -29,9 +40,9 @@ extension String {
         - parameter length:    Integer target length for entire string
         - returns: The padded string
     */
-    func rpad(padding: String, length: Int) -> (String) {
+    func rpad(_ padding: String, length: Int) -> (String) {
         if self.characters.count > length { return self }
-        return self.stringByPaddingToLength(length, withString:padding, startingAtIndex:0)
+        return self.padding(toLength: length, withPad:padding, startingAt:0)
     }
     /**
         Returns string with left and right spaces trimmed off.
@@ -39,7 +50,7 @@ extension String {
         - returns: Trimmed String
     */
     func trim() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
     /**
         Shortcut for getting length (since Swift keeps cahnging this).
@@ -56,7 +67,7 @@ extension String {
         - returns: Character
     */
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     subscript (i: Int) -> String {
         return String(self[i] as Character)
@@ -68,19 +79,19 @@ extension String {
         - parameter end:                 (Optional) Where to end (-1 acceptable) - default to end of string
         - returns: String
     */
-    func stringFrom(start: Int, to end: Int? = nil) -> String {
+    func stringFrom(_ start: Int, to end: Int? = nil) -> String {
         var maximum = self.characters.count
         
         let i = start < 0 ? self.endIndex : self.startIndex
         let ioffset = min(maximum, max(-1 * maximum, start))
-        let startIndex = i.advancedBy(ioffset)
+        let startIndex = characters.index(i, offsetBy: ioffset)
         
         maximum -= start
         
         let j = end < 0 ? self.endIndex : self.startIndex
         let joffset = min(maximum, max(-1 * maximum, end!))
-        let endIndex = end != nil && end! < self.characters.count ? j.advancedBy(joffset) : self.endIndex
-        return self.substringWithRange(Range(start: startIndex, end: endIndex))
+        let endIndex = end != nil && end! < self.characters.count ? characters.index(j, offsetBy: joffset) : self.endIndex
+        return self.substring(with: (startIndex ..< endIndex))
     }
     /**
         Returns substring composed of only the allowed characters.
@@ -88,9 +99,9 @@ extension String {
         - parameter allowed:             String list of acceptable characters
         - returns: String
     */
-    func onlyCharacters(allowed: String) -> String {
+    func onlyCharacters(_ allowed: String) -> String {
         let search = allowed.characters
-        return characters.filter({ search.contains($0) }).reduce("", combine: { $0 + String($1) })
+        return characters.filter({ search.contains($0) }).reduce("", { $0 + String($1) })
     }
     /**
         Simple pattern matcher. Requires full match (ie, includes ^$ implicitly).
@@ -98,8 +109,8 @@ extension String {
         - parameter pattern:             Regex pattern (includes ^$ implicitly)
         - returns: true if full match found
     */
-    func matches(pattern: String) -> Bool {
+    func matches(_ pattern: String) -> Bool {
         let test = NSPredicate(format:"SELF MATCHES %@", pattern)
-        return test.evaluateWithObject(self)
+        return test.evaluate(with: self)
     }
 }

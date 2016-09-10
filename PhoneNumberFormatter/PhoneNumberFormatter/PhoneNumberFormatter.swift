@@ -22,7 +22,7 @@ public struct PhoneNumberFormatter {
     /**
         Set available locales here.
     */
-    private enum AvailableLocales: String {
+    fileprivate enum AvailableLocales: String {
         case UnitedStates = "US",
              Canada = "CA"
     }
@@ -30,11 +30,11 @@ public struct PhoneNumberFormatter {
     /**
         Set default locale here.
     */
-    private static var defaultLocale = AvailableLocales.UnitedStates
+    fileprivate static var defaultLocale = AvailableLocales.UnitedStates
     
-    private static var locale: AvailableLocales = {
-        if let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String,
-           let locale = AvailableLocales(rawValue: country) {
+    fileprivate static var locale: AvailableLocales = {
+        if let country = NSLocale.autoupdatingCurrent.localizedString(forIdentifier: NSLocale.Key.countryCode.rawValue),
+            let locale = AvailableLocales(rawValue: country) {
             return locale
         }
         return defaultLocale
@@ -45,13 +45,13 @@ public struct PhoneNumberFormatter {
         Set formats for available locales here.
         (expect a string of correct length, but match with dot (.), not digit (\d))
     */
-    private let formatByLocale: [AvailableLocales: Format] = [
+    fileprivate let formatByLocale: [AvailableLocales: Format] = [
         .UnitedStates: (length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
         .Canada: (length: 10, match: "^(...)(...)(....)$", format: "($1) $2-$3"),
     ]
-    private typealias Format = (length: Int, match: String, format: String)
+    fileprivate typealias Format = (length: Int, match: String, format: String)
     
-    private var lastPhoneNumbers: [Int: String] = [:]
+    fileprivate var lastPhoneNumbers: [Int: String] = [:]
     
     //Mark: Public functions:
     
@@ -62,7 +62,7 @@ public struct PhoneNumberFormatter {
         - parameter hash:             If you are dealing with multiple phone numbers, you will need to include a unique id for each (field.hash is good)
         - returns:                Formatted phone number string
     */
-    mutating public func format(phoneNumber: String, hash: Int = 0) -> String {
+    mutating public func format(_ phoneNumber: String, hash: Int = 0) -> String {
         //strip to numbers
         var numericText = phoneNumber.onlyCharacters("0123456789")
         if numericText.length == 0 {
@@ -88,8 +88,8 @@ public struct PhoneNumberFormatter {
             if numericText.length > formatStyle.length {
                 numericText = numericText.stringFrom(0, to: formatStyle.length)
             }
-            let fullyFormattedNumber = numericText.stringByReplacingOccurrencesOfString(formatStyle.match, withString: formatStyle.format, options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
-            if let editingNumber = fullyFormattedNumber.characters.split(1, allowEmptySlices: true, isSeparator: {
+            let fullyFormattedNumber = numericText.replacingOccurrences(of: formatStyle.match, with: formatStyle.format, options: NSString.CompareOptions.regularExpression, range: nil)
+            if let editingNumber = fullyFormattedNumber.characters.split(maxSplits: 1, omittingEmptySubsequences: false, whereSeparator: {
                 Character(placeholder) == $0
             }).first {
                 let eNumber = String(editingNumber)
@@ -108,7 +108,7 @@ public struct PhoneNumberFormatter {
         - parameter phoneNumber:      A numeric phone number. Expects no formatting!
         - returns:                True if phone number matches locale pattern
     */
-    public func isValid(phoneNumber: String) -> Bool {
+    public func isValid(_ phoneNumber: String) -> Bool {
         let numericText = phoneNumber.onlyCharacters("0123456789")
         if let formatStyle = formatByLocale[PhoneNumberFormatter.locale] {
             return numericText.length == formatStyle.length
