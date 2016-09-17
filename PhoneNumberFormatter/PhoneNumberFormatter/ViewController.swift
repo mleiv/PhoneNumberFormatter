@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     /**
         Wired up to be called every time the field is edited.
     */
-    @IBAction func formatField(sender: UITextField) {
+    @IBAction func formatField(_ sender: UITextField) {
         if let text = sender.text {
             if sender == phone1 {
                 sender.text = phoneFormatter.format(text)
@@ -37,25 +37,25 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func checkIsValid(sender: AnyObject) {
-        validationResponse.hidden = true
+    @IBAction func checkIsValid(_ sender: AnyObject) {
+        validationResponse.isHidden = true
         var message = String()
         if phone1.text?.isEmpty == false {
-            if let text = phone1.text where !phoneFormatter.isValid(text) {
+            if let text = phone1.text , !phoneFormatter.isValid(text) {
                 message += "Phone 1 is invalid.\n"
             } else {
                 message += "Phone 1 is valid.\n"
             }
         }
         if phone2.text?.isEmpty == false {
-            if let text = phone2.text where !phoneFormatter.isValid(text) {
+            if let text = phone2.text , !phoneFormatter.isValid(text) {
                 message += "Phone 2 is invalid.\n"
             } else {
                 message += "Phone 2 is valid.\n"
             }
         }
         validationResponse.text = message
-        validationResponse.hidden = false
+        validationResponse.isHidden = false
     }
 
 }
