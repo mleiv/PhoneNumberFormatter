@@ -4,6 +4,10 @@
 
 ## News
 
+2016-09-17 Updated to Swift 3.0, with prodding from [jstart](https://github.com/jstart)
+
+## News
+
 2015-10-16 Updated to Swift 2.0, thanks to [duffpod](https://github.com/duffpod)
 
 ## Including in Your App
